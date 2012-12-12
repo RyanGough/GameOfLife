@@ -2,23 +2,27 @@
 
 var GameOfLife =  function () {
 
+	var formatPositionString = function(x, y){
+		return x.toString() + "_" + y.toString();
+	};
+
 	var createCell = function (x,y) {
 		var cell = {};
 		cell.x = x;
 		cell.y = y;
 		cell.toString = function() {
-			return this.x.toString() + "_" + this.y.toString();
+			return formatPositionString(this.x, this.y);
 		};
 		cell.neighbours = function() {
 			var neighbours = [];
-			neighbours.push("p" + (this.x - 1).toString() + "_" + (this.y - 1).toString());
-			neighbours.push("p" + (this.x - 1).toString() + "_" + (this.y).toString());
-			neighbours.push("p" + (this.x - 1).toString() + "_" + (this.y + 1).toString());
-			neighbours.push("p" + (this.x).toString() + "_" + (this.y - 1).toString());
-			neighbours.push("p" + (this.x).toString() + "_" + (this.y + 1).toString());
-			neighbours.push("p" + (this.x + 1).toString() + "_" + (this.y - 1).toString());
-			neighbours.push("p" + (this.x + 1).toString() + "_" + (this.y).toString());
-			neighbours.push("p" + (this.x + 1).toString() + "_" + (this.y + 1).toString());
+			neighbours.push(formatPositionString(this.x - 1, this.y - 1));
+			neighbours.push(formatPositionString(this.x - 1, this.y + 1));
+			neighbours.push(formatPositionString(this.x + 1, this.y - 1));
+			neighbours.push(formatPositionString(this.x + 1, this.y + 1));
+			neighbours.push(formatPositionString(this.x + 1, this.y));
+			neighbours.push(formatPositionString(this.x - 1, this.y));
+			neighbours.push(formatPositionString(this.x, this.y - 1));
+			neighbours.push(formatPositionString(this.x, this.y + 1));
 			return neighbours;
 		}
 		return cell;
@@ -44,10 +48,10 @@ var GameOfLife =  function () {
 		for (var i = 0; i < listOfCells.length; i++)
 		{
 			// add ten for this cell
-			if (neighbourCount["p" + listOfCells[i].toString()] === undefined) {
-				neighbourCount["p" + listOfCells[i].toString()] = 0;
+			if (neighbourCount[listOfCells[i].toString()] === undefined) {
+				neighbourCount[listOfCells[i].toString()] = 0;
 			}
-			neighbourCount["p" + listOfCells[i].toString()] += 10;
+			neighbourCount[listOfCells[i].toString()] += 10;
 
 			// add one for each neighbour
 			var neighbours = listOfCells[i].neighbours();
@@ -71,7 +75,7 @@ var GameOfLife =  function () {
 			if (neighbourCount.hasOwnProperty(key))
 			{
 				if (neighbourCount[key] === 3 || neighbourCount[key] === 12 || neighbourCount[key] === 13) {
-					var strings = key.substr(1).split("_");
+					var strings = key.split("_");
 					var newCell = createCell(parseInt(strings[0]), parseInt(strings[1]));
 					newCells.push(newCell);
 				}

@@ -81,15 +81,15 @@ describe("GameOfLife", function() {
       var cells = [];
       cells.push(cell);
       var neighbourCount = GameOfLife.createNeighbourCount(cells);
-      expect(neighbourCount["p1_2"]).to.be(10);
-      expect(neighbourCount["p0_1"]).to.be(1);
-      expect(neighbourCount["p0_2"]).to.be(1);
-      expect(neighbourCount["p0_3"]).to.be(1);
-      expect(neighbourCount["p1_1"]).to.be(1);
-      expect(neighbourCount["p1_3"]).to.be(1);
-      expect(neighbourCount["p2_1"]).to.be(1);
-      expect(neighbourCount["p2_2"]).to.be(1);
-      expect(neighbourCount["p2_3"]).to.be(1);
+      expect(neighbourCount["1_2"]).to.be(10);
+      expect(neighbourCount["0_1"]).to.be(1);
+      expect(neighbourCount["0_2"]).to.be(1);
+      expect(neighbourCount["0_3"]).to.be(1);
+      expect(neighbourCount["1_1"]).to.be(1);
+      expect(neighbourCount["1_3"]).to.be(1);
+      expect(neighbourCount["2_1"]).to.be(1);
+      expect(neighbourCount["2_2"]).to.be(1);
+      expect(neighbourCount["2_3"]).to.be(1);
     }); 
 
     it('given 4 cell block returns correct neighbour count', function(){
@@ -99,10 +99,10 @@ describe("GameOfLife", function() {
       var cell4 = GameOfLife.createCell(2,2);
       var cells = [cell1, cell2, cell3, cell4];
       var neighbourCount = GameOfLife.createNeighbourCount(cells);
-      expect(neighbourCount["p1_2"]).to.be(13);
-      expect(neighbourCount["p2_2"]).to.be(13);
-      expect(neighbourCount["p1_1"]).to.be(13);
-      expect(neighbourCount["p2_1"]).to.be(13);
+      expect(neighbourCount["1_2"]).to.be(13);
+      expect(neighbourCount["2_2"]).to.be(13);
+      expect(neighbourCount["1_1"]).to.be(13);
+      expect(neighbourCount["2_1"]).to.be(13);
     }); 
 
   });
@@ -130,7 +130,7 @@ describe("GameOfLife", function() {
 
   });
 
-  describe("performace", function () {
+  describe.skip("performace", function () {
     it('should be able to iterate 1000 generations in 2 seconds', function () {
       var liveCells = GameOfLife.createWorld();
       var start = new Date().getTime();
