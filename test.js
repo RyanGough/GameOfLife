@@ -7,6 +7,9 @@
 // step forward button generates new play field from current
 // new play field is rendered to screen
 // play button constantly generates new play field and renders
+// edit button exits
+// edit button draws grid on canvas
+// clicking on canvas when in edit mode toggles cell
 
 
 describe("GameOfLife", function() {
@@ -37,10 +40,51 @@ describe("GameOfLife", function() {
 
     it('Contains Run button', function (){
       expect($('#GameOfLife #run').length).to.be(1);
-      expect($('#GameOfLife #Run').attr("value")).to.be("Run");
+      expect($('#GameOfLife #run').attr("value")).to.be("Run");
     }); 
-  
+
+    it('Contains Edit button', function (){
+      expect($('#GameOfLife #edit').length).to.be(1);
+      expect($('#GameOfLife #edit').attr("value")).to.be("Toggle Edit");
+    });
+
+    it('Contains Clear button', function (){
+      expect($('#GameOfLife #clearWorld').length).to.be(1);
+      expect($('#GameOfLife #clearWorld').attr("value")).to.be("Clear");
+    }); 
   });
+
+  describe("Running Mode", function (){
+    it('Run text changes to stop when running', function (){
+      GameOfLife.clickRun();
+      expect($('#GameOfLife #run').attr("value")).to.be("Stop");
+      expect($('#GameOfLife #edit').attr("disabled")).to.be("disabled");
+      expect($('#GameOfLife #nextGeneration').attr("disabled")).to.be("disabled");
+      expect($('#GameOfLife #generateWorld').attr("disabled")).to.be("disabled");
+      expect($('#GameOfLife #clearWorld').attr("disabled")).to.be("disabled");
+      GameOfLife.clickRun();
+      expect($('#GameOfLife #run').attr("value")).to.be("Run");
+      expect($('#GameOfLife #edit').attr("disabled")).to.be(undefined);      
+      expect($('#GameOfLife #nextGeneration').attr("disabled")).to.be(undefined);
+      expect($('#GameOfLife #generateWorld').attr("disabled")).to.be(undefined);
+      expect($('#GameOfLife #clearWorld').attr("disabled")).to.be(undefined);
+    });
+  });
+
+  describe("Edit Mode", function (){
+    it('Other buttons disabled during edit mode', function (){
+      GameOfLife.clickEdit();
+      expect($('#GameOfLife #generateWorld').attr("disabled")).to.be("disabled");
+      expect($('#GameOfLife #nextGeneration').attr("disabled")).to.be("disabled");
+      expect($('#GameOfLife #run').attr("disabled")).to.be("disabled");
+      expect($('#GameOfLife #clearWorld').attr("disabled")).to.be("disabled");
+      GameOfLife.clickEdit();
+      expect($('#GameOfLife #generateWorld').attr("disabled")).to.be(undefined);
+      expect($('#GameOfLife #nextGeneration').attr("disabled")).to.be(undefined);
+      expect($('#GameOfLife #run').attr("disabled")).to.be(undefined);
+      expect($('#GameOfLife #clearWorld').attr("disabled")).to.be(undefined);
+    });   
+  }); 
 
   describe("Generation Of New Game", function (){
 
@@ -130,7 +174,7 @@ describe("GameOfLife", function() {
 
   });
 
-  describe.skip("performace", function () {
+  describe.skip("Performace", function () {
     it('should be able to iterate 1000 generations in 2 seconds', function () {
       var liveCells = GameOfLife.createWorld();
       var start = new Date().getTime();
