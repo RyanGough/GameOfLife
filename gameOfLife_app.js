@@ -4,60 +4,13 @@ var gameOfLife_app =  function () {
 
 	var methods = {};
 
-	var renderer = function (canvas, cellSize) {
-
-		var canvasContext = canvas.getContext("2d");
-		
-		var renderCell = function (cell) {
-			canvasContext.beginPath();
-			canvasContext.arc(cell.x * cellSize, cell.y * cellSize, cellSize / 2, 0, 2 * Math.PI);
-			canvasContext.fill();
-			canvasContext.stroke();
-		};
-
-		var renderCells = function (cells) {
-			for (var i = 0; i < cells.length; i++)
-			{
-				renderCell(cells[i]);
-			}
-		};
-
-		var drawGrid = function () {
-			for (var row = 0; row <= canvas.height; row += cellSize)
-			{
-				canvasContext.moveTo(0, row - cellSize / 2);
-				canvasContext.lineTo(canvas.width, row - cellSize / 2);
-			}
-
-			for (var col = 0; col <= canvas.width; col += cellSize)
-			{
-				canvasContext.moveTo(col - cellSize / 2, 0);
-				canvasContext.lineTo(col - cellSize / 2, canvas.height);
-			}
-
-			canvasContext.lineWidth = 0.5;
-	    	canvasContext.stroke();
-		};
-
-		var clear = function () {
-			canvas.width = canvas.width;
-		};	
-
-		var renderingMethods = {};
-		renderingMethods.renderWorld = renderCells;
-		renderingMethods.drawGrid = drawGrid;
-		renderingMethods.clear = clear;
-		return renderingMethods;
-	};
-
 	var createApplication = function () {
 
 		var model = gameOfLife_model();
-		var canvas = document.getElementById("worldView");
-		var cellRenderSize = 10;
-		var gameRenderer = renderer(canvas, cellRenderSize);
+		var gameRenderer = gameOfLife_render();
 		var runTimer = null;
 		var editMode = false;
+		var svg = d3.select("#worldViewSvg");
 
 		var renderModel = function () {
 			gameRenderer.clear();
@@ -119,15 +72,13 @@ var gameOfLife_app =  function () {
 			model.clearWorld();	
 		};
 
-		var clickCanvas = function (event) {
-	    	var rect = canvas.getBoundingClientRect();
-	    	var cell_x = Math.floor((event.clientX - rect.left) / cellRenderSize);
-			var cell_y = Math.floor((event.clientY - rect.top) / cellRenderSize);
-
-			model.toggleCell(cell_x, cell_y);
+		function editClickHandler()
+		{
+			var cellPos = gameRenderer.convertSvgPosToCellPos(d3.mouse(this));
+			model.toggleCell(cellPos.x, cellPos.y);
 			renderModel();
 			gameRenderer.drawGrid();
-		};	
+		}
 
 		var clickEdit = function () {
 			editMode = !editMode;
@@ -135,13 +86,13 @@ var gameOfLife_app =  function () {
 			{
 				setControlsForEditMode();
 				gameRenderer.drawGrid();
-				canvas.addEventListener("mousedown", clickCanvas, false);
+				svg.on("click", editClickHandler);
 			}
 			else
 			{
 				setControlsForReadyMode();
 				renderModel();
-				canvas.removeEventListener('mousedown', clickCanvas);
+				svg.on("click", null);
 			}
 		};
 

@@ -6,7 +6,9 @@
 </head>
 <body>
   <script src="jquery.js"></script>
+  <script src="./d3/d3.v3.min.js"></script>
   <script src="gameOfLife_model.js"></script>
+  <script src="gameOfLife_render.js"></script>
   <script src="gameOfLife_app.js"></script>
   <script>window.onload = function () {
       gameOfLife_app.createApplication();
@@ -14,13 +16,13 @@
   </script>
   <div id="GameOfLife">
     <h1>Game Of Life</h1>
-    <canvas width='800' height="500" id="worldView"></canvas>
     <br/>
     <input type="button" width="100" value="New Game" id="generateWorld" onClick="gameOfLife_app.clickNewWorld()"></input>
     <input type="button" width="100" value="Next" id="nextGeneration" onClick="gameOfLife_app.clickNewGeneration()"></input>
     <input type="button" width="100" value="Run" id="run" onClick="gameOfLife_app.clickRun()"></input>
     <input type="button" width="100" value="Toggle Edit" id="edit" onClick="gameOfLife_app.clickEdit()"></input>
     <input type="button" width="100" value="Clear" id="clearWorld" onClick="gameOfLife_app.clickClear()"></input>
+    <br/>
   </div>
   <div id="blurb">
     <p>

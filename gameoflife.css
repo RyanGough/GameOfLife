@@ -1,3 +1,7 @@
-#GameOfLife canvas {
-  border: solid;
+svg line {
+	stroke: lightgrey;
+	stroke-width: 1;
+	stroke-opacity: 0.7;
 }
+
+		
